@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Shootko Fight</title>
+    <title>3345</title>
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
     <link rel="stylesheet" href="TemplateData/style.css">
   </head>
@@ -14,7 +14,7 @@
     </div>
     <div id="loading-cover" style="display:none;">
       <div id="unity-loading-bar">
-        <div id="unity-logo"><img src="logo.png"></div>
+        <div id="unity-logo"></div>
         <div id="unity-progress-bar-empty" style="display: none;">
           <div id="unity-progress-bar-full"></div>
         </div>
@@ -25,14 +25,14 @@
     <script>
       const hideFullScreenButton = "1";
       const buildUrl = "Build";
-      const loaderUrl = buildUrl + "/ShootkoFight-WebGL.loader.js";
+      const loaderUrl = buildUrl + "/3345-WebGL.loader.js";
       const config = {
-        dataUrl: buildUrl + "/ShootkoFight-WebGL.data",
-        frameworkUrl: buildUrl + "/ShootkoFight-WebGL.framework.js",
-        codeUrl: buildUrl + "/ShootkoFight-WebGL.wasm",
+        dataUrl: buildUrl + "/3345-WebGL.data",
+        frameworkUrl: buildUrl + "/3345-WebGL.framework.js",
+        codeUrl: buildUrl + "/3345-WebGL.wasm",
         streamingAssetsUrl: "StreamingAssets",
-        companyName: "Shootko Fight",
-        productName: "Shootko Fight",
+        companyName: "3345",
+        productName: "3345",
         productVersion: "1.0",
       };
 
@@ -59,11 +59,23 @@
         return false;
       }());
 
+      let desiredDPR = Math.min(window.devicePixelRatio, 1.7);
+
       if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
         container.className = "unity-mobile";
-        config.devicePixelRatio = 1;
+        config.devicePixelRatio = desiredDPR;
       }
       loadingCover.style.display = "";
+
+      function resizeCanvas() {
+        const dpr = config.devicePixelRatio || 1;
+        canvas.width = canvas.clientWidth * dpr;
+        canvas.height = canvas.clientHeight * dpr;
+        canvas.style.width = canvas.clientWidth + "px";
+        canvas.style.height = canvas.clientHeight + "px";
+        const ctx = canvas.getContext("webgl2") || canvas.getContext("webgl");
+        if (ctx) ctx.viewport(0, 0, canvas.width, canvas.height);
+      }
 
       const script = document.createElement("script");
       script.src = loaderUrl;
@@ -73,6 +85,7 @@
           progressBarEmpty.style.display = "";
           progressBarFull.style.width = `${100 * progress}%`;
         }).then((unityInstance) => {
+          resizeCanvas(); // підлаштовуємо canvas під DPR
           loadingCover.style.display = "none";
           if (canFullscreen) {
             if (!hideFullScreenButton) {
